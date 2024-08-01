@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    command: ["mongod", "--tlsMode", "requireTLS", "--tlsCertificateKeyFile", "/etc/ssl/server.pem", "--tlsCAFile", "/etc/ssl/ca.crt"]
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./ssl:/etc/ssl:ro
+
+  app:
+    image: node_app_image
+    container_name: node_app_container
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+    environment:
+      MONGO_URI: "mongodb://mongodb:27017/dummyDb?tls=true&tlsCAFile=/etc/ssl/ca.crt&tlsCertificateKeyFile=/etc/ssl/client.pem"
+    volumes:
+      - ./ssl:/etc/ssl:ro
+
+volumes:
+  mongodb_data:
+    driver: local

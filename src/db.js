@@ -1,12 +1,11 @@
-
-// import mongoose, { Schema, model } from 'mongoose';
 const mongoose = require('mongoose');
+require('dotenv').config();
 
+const mongoUrl = process.env.MONGO_URI;
 
-const mongoUrl =`${process.env.MONGO_URI}`;
-
-// Connect to MongoDB
-mongoose.connect(mongoUrl)
+mongoose.connect(mongoUrl,{
+  
+})
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 

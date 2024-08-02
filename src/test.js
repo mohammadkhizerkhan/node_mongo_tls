@@ -1,15 +1,25 @@
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
 const fs = require('fs');
+const tls = require('tls');
+
+
+
+const url = process.env.MONGO_URI;
+const caFile = '/Users/mohammadkhizer/Desktop/nodejs/dummy/src/ssl/ca.crt';
+const certKeyFile = '/Users/mohammadkhizer/Desktop/nodejs/dummy/src/ssl/client.pem';
+
+
+const secureContext = tls.createSecureContext({
+  ca: fs.readFileSync(caFile),
+  cert: fs.readFileSync(certKeyFile),
+});
 
 // Connection URL
-const url = process.env.MONGO_URI;
+
 const client = new MongoClient(url, {
-  tls: true,
-  tlsCAFile: '/etc/ssl/ca.crt',
-  tlsCertificateKeyFile: '/etc/ssl/client.pem',
-//   tlsAllowInvalidHostnames: false,
-//   tlsAllowInvalidCertificates: false
+  secureContext,
+  tlsAllowInvalidHostnames: false,
 });
 
 // Database Name

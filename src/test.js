@@ -6,28 +6,30 @@ const tls = require('tls');
 
 
 const url = process.env.MONGO_URI;
-const caFile = '/Users/mohammadkhizer/Desktop/nodejs/dummy/src/ssl/ca.crt';
-const certKeyFile = '/Users/mohammadkhizer/Desktop/nodejs/dummy/src/ssl/client.pem';
+// const caFile = '/Users/mohammadkhizer/Desktop/nodejs/dummy/src/ssl/ca.crt';
+// const certKeyFile = '/Users/mohammadkhizer/Desktop/nodejs/dummy/src/ssl/client.pem';
 
 
-const secureContext = tls.createSecureContext({
-  ca: fs.readFileSync(caFile),
-  cert: fs.readFileSync(certKeyFile),
-});
+// const secureContext = tls.createSecureContext({
+//   ca: fs.readFileSync(caFile),
+//   cert: fs.readFileSync(certKeyFile),
+// });
 
 // Connection URL
 
 const client = new MongoClient(url, {
-  secureContext,
-  tlsAllowInvalidHostnames: false,
+  tls:true,
+  tlsCAFile: './ssl/ca.crt',
+  tlsCertificateKeyFile: './ssl/client.pem',
+  // tlsAllowInvalidHostnames: true,
+  // tlsAllowInvalidCertificates:true
 });
 
 // Database Name
-const dbName = 'myProject';
+const dbName = 'myDb';
 
 async function main() {
   try {
-    // Use connect method to connect to the server
     await client.connect();
     console.log('Connected successfully to server');
     const db = client.db(dbName);

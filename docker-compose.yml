@@ -6,7 +6,7 @@ services:
     container_name: mongodb
     command: ["mongod", "--tlsMode", "requireTLS", "--tlsCertificateKeyFile", "/etc/ssl/server.pem", "--tlsCAFile", "/etc/ssl/ca.crt"]
     ports:
-      - "27017:27017"
+      - "27018:27017"
     volumes:
       - mongodb_data:/data/db
       - ./ssl:/etc/ssl:ro
@@ -19,7 +19,7 @@ services:
     depends_on:
       - mongodb
     environment:
-      MONGO_URI: "mongodb://mongodb:27017/dummyDb?tls=true&tlsCAFile=/etc/ssl/ca.crt&tlsCertificateKeyFile=/etc/ssl/client.pem"
+      MONGO_URI: "mongodb://mongodb:27017/dummyDb"
     volumes:
       - ./ssl:/etc/ssl:ro
 
